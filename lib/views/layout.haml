@@ -1,0 +1,26 @@
+%html
+  %head
+    %title Practice page
+    %link{:type => "text/css", :rel => "stylesheet", :href => "../css/styles.css"}
+    %link{:type => "text/css", :rel => "stylesheet", :href => "../css/bootstrap.min.css"}
+    .do 
+      = yield_content :header_scripts
+  %body
+    .container
+      .do
+        = yield_content :navbar
+    .do 
+      = yield_content :jumbo
+    .container
+      .do
+        = yield_content :body
+
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    %script{:src=>"/js/bootstrap.min.js"}
+  </body>
+</html>
