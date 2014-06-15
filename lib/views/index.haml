@@ -1,12 +1,13 @@
 - require 'json'
 - markers = locals[:pins].to_json
-- postData = locals[:postData].to_json
+- body = locals[:postData]
+- location = locals[:location].to_json
 = content_for :header_scripts do
 	%script{:src=>"https://maps.googleapis.com/maps/api/js"}
 
 	:javascript
 		function initialize() {
-			var post = eval(#{postData});
+			var post = eval(#{location});
 			var lat = post.lat;
 			var long = post.lon;
 			var zoom = #{locals[:zoom]};  
@@ -17,12 +18,12 @@
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			}
 			var map = new google.maps.Map(map_canvas, map_options);
-			var points = eval(#{markers});
-			for(var item in points)
+			var markers = eval(#{markers});
+			for(var i in markers)
 			{
-				var lat = points[item].lat;
-				var lon = points[item].lon;	
-				var target = points[item].post_ref;			
+				var lat = markers[i].lat;
+				var lon = markers[i].lon;	
+				var ref = markers[i].ref;			
 				var latLong = new google.maps.LatLng(lat, lon);
 				var marker = new google.maps.Marker({
 				position: latLong,
@@ -31,7 +32,7 @@
 				animation: google.maps.Animation.DROP
 				});
 				google.maps.event.addListener(marker, 'click', function() {
-					window.location.assign("/"+target);
+					window.location.assign("/"+ref);
 				});
 			}		
 		}
@@ -60,18 +61,16 @@
 	%div{:id=>"map_canvas"}
 
 = content_for :body do
-	
 	%br
 	.row
 		.col-md-12.well
 			.btn-group
 				%button.btn Prev
 				%button.btn Next
-
 			%h1 
-				=locals[:title]
+				Title
 			%p.lead 
-				=locals[:body]
+				#{body}
 	%hr
 	%footer
 		%p &copy; Company 2014

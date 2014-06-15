@@ -1,0 +1,9 @@
+source 'https://rubygems.org'
+ruby "1.9.3"
+  gem 'rake'
+gem 'activerecord' 
+gem 'sinatra'
+gem 'pg'
+gem 'sinatra-contrib'
+gem 'haml'
+gem 'json'

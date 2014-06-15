@@ -1,6 +1,16 @@
 require_relative 'lib/app'
+require 'sinatra/activerecord/rake'
 
-task :default do
+namespace :db do
+  desc "Migrate the database"
+  task(:migrate => :environment) do
+    ActiveRecord::Base.logger = Logger.new(STDOUT)
+    ActiveRecord::Migration.verbose = true
+    ActiveRecord::Migrator.migrate("db/migrate")
+  end
+end
+
+task :environment do
 	thin_command = "thin start -R config.ru"
 	if (ENV['OS'] =~ /Windows/)
 		sh thin_command

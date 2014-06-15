@@ -8,29 +8,27 @@ module RabbleWeb
         end
 
         app.get "/index/?:post?" do
-
-          posts = settings.posts  
           
           id = params[:post] == nil ? 1 : params[:post]
-          post = posts.getPost(id)
+          pins = []
+          count = 0
 
+            Location.all.each do |a|
 
-   #       target = json.first
-   #       params[:post] = 1 if params[:post] == nil
+              pins[count] = {:lat => a[:latitude], :lon => a[:longitude], :ref => a[:entry_id]}
+              count += 1
+            end
 
-
-          #handle if no post
-    #      currentPost = json[params[:post]];
-
-
+          entry = Entry.find(1)
+          l = Location.find_by entry_id: entry[:id]
+          pin =  {:lat => l[:latitude], :lon => l[:longitude], :ref => l[:entry_id]}
 
 
           haml :index, :locals => 
-            {:title => "Title of an entry",
-              :body => "This is some great content",
-              :postData => post,
+            { :postData => entry[:content],
+              :location => pin,
               :zoom => "8",
-              :pins => post}
+              :pins => pins}
         end   
       end
     end
